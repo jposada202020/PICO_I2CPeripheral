@@ -24,7 +24,7 @@
  * THE SOFTWARE.
  */
 
-#include "shared-bindings/busio/I2C.h" //TODO Modify this link
+#include "shared-bindings/i2cperipheral/I2CPeripheral.h"
 #include "py/mperrno.h"
 #include "py/runtime.h"
 
@@ -33,9 +33,12 @@
 
 #include "src/rp2_common/hardware_gpio/include/hardware/gpio.h"
 
+#include "common-hal/i2cperipheral/I2CPeripheral.h"
+
 // Synopsys  DW_apb_i2c  (v2.01)  IP
 
 #define NO_PIN 0xff
+#define DEFAULT_ADDRESS (0x055)
 
 STATIC bool never_reset_i2c[2];
 STATIC i2c_inst_t* i2c[2] = {i2c0, i2c1};
@@ -68,7 +71,7 @@ void common_hal_i2cperipheral_i2c_peripheral_construct(i2cperipheral_i2c_periphe
     }
     if (frequency > 1000000) {
         mp_raise_ValueError(translate("Unsupported baudrate"));
-    } //TODO verify if the speed parameter is neccesary
+    } //TODO verify if the speed parameter is necessary
 
     gpio_set_function(sda->number, GPIO_FUNC_I2C);
     gpio_set_function(scl->number, GPIO_FUNC_I2C);

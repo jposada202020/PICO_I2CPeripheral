@@ -24,8 +24,8 @@
  * THE SOFTWARE.
  */
 
-#ifndef MICROPY_INCLUDED_RASPBERRYPI_COMMON_HAL_BUSIO_I2C_H
-#define MICROPY_INCLUDED_RASPBERRYPI_COMMON_HAL_BUSIO_I2C_H
+#ifndef MICROPY_INCLUDED_RASPBERRYPI_COMMON_HAL_BUSIO_I2C_PERIPHERAL_H
+#define MICROPY_INCLUDED_RASPBERRYPI_COMMON_HAL_BUSIO_I2C_PERIPHERAL_H
 
 #include "common-hal/microcontroller/Pin.h"
 
@@ -35,13 +35,12 @@
 
 typedef struct {
     mp_obj_base_t base;
-    i2c_inst_t * peripheral;
-    bool has_lock;
+
     uint baudrate;
     uint8_t scl_pin;
     uint8_t sda_pin;
+    bool writing;
 } i2cperipheral_i2c_peripheral_obj_t;
 
-void reset_i2c(void);
 
-#endif // MICROPY_INCLUDED_RASPBERRYPI_COMMON_HAL_BUSIO_I2C_H
+#endif // MICROPY_INCLUDED_RASPBERRYPI_COMMON_HAL_BUSIO_I2C_PERIPHERAL_H
