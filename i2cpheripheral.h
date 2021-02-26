@@ -35,11 +35,9 @@
 
 typedef struct {
     mp_obj_base_t base;
-
-    uint baudrate;
+    i2c_inst_t * pheripheral;
     uint8_t scl_pin;
     uint8_t sda_pin;
-    bool writing;
 } i2cperipheral_i2c_peripheral_obj_t;
 
 
