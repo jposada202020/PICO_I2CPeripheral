@@ -38,7 +38,7 @@
 // Synopsys  DW_apb_i2c  (v2.01)  IP
 
 #define NO_PIN 0xff
-#define DEFAULT_ADDRESS (0x055)
+#define DEFAULT_ADDRESS 0x055
 
 STATIC bool never_reset_i2c[2];
 STATIC i2c_inst_t* i2c[2] = {i2c0, i2c1};
@@ -73,7 +73,7 @@ void common_hal_i2cperipheral_i2c_peripheral_construct(i2cperipheral_i2c_periphe
     gpio_set_function(scl->number, GPIO_FUNC_I2C);
 
 
-    i2c_set_slave_mode (self->peripheral, true, 0x055);
+    i2c_set_slave_mode (self->peripheral, true, DEFAULT_ADDRESS);
 
     self->sda_pin = sda->number;
     self->scl_pin = scl->number;
