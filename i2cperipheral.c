@@ -54,8 +54,7 @@ void reset_i2c(void) {
 }
 
 void common_hal_i2cperipheral_i2c_peripheral_construct(i2cperipheral_i2c_peripheral_obj_t *self,
-        const mcu_pin_obj_t* scl, const mcu_pin_obj_t* sda, uint32_t frequency,
-         uint32_t timeout, uint8_t address) {
+        const mcu_pin_obj_t* scl, const mcu_pin_obj_t* sda, uint8_t address) {
     self->peripheral = NULL;
     // I2C pins have a regular pattern. SCL is always odd and SDA is even. They match up in pairs
     // so we can divide by two to get the instance. This pattern repeats.
@@ -69,15 +68,12 @@ void common_hal_i2cperipheral_i2c_peripheral_construct(i2cperipheral_i2c_periphe
     if ((i2c_get_hw(self->peripheral)->enable & I2C_IC_ENABLE_ENABLE_BITS) != 0) {
         mp_raise_ValueError(translate("I2C peripheral in use"));
     }
-    if (frequency > 1000000) {
-        mp_raise_ValueError(translate("Unsupported baudrate"));
-    } //TODO verify if the speed parameter is necessary
 
     gpio_set_function(sda->number, GPIO_FUNC_I2C);
     gpio_set_function(scl->number, GPIO_FUNC_I2C);
 
-    self->baudrate = i2c_init(self->peripheral, frequency);
-    i2c_set_slave_mode(self->peripheral, true, address);
+
+    i2c_set_slave_mode (self->peripheral, true, 0x055);
 
     self->sda_pin = sda->number;
     self->scl_pin = scl->number;
@@ -102,3 +98,10 @@ void common_hal_i2cperipheral_i2c_peripheral_deinit(i2cperipheral_i2c_peripheral
     self->sda_pin = NO_PIN;
     self->scl_pin = NO_PIN;
 }
+
+void common_hal_i2cperipheral_i2c_peripheral_write(i2cperipheral_i2c_peripheral_obj_t *self, 
+                                   const uint8_t *data, 
+                                   size_t len) {
+    i2c_raw_blocking(self->peripheral, data, len);
+}
+
